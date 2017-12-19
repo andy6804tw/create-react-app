@@ -15,7 +15,7 @@ class App extends Component {
     this.setState(
       {
         persons: [
-          { name: "Andy2", "age": 21 },
+          { name: newName, "age": 21 },
           { name: "Jack2", "age": 22 }
         ]
       }
@@ -26,11 +26,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Hello World! React</h1>
-        <button onClick={this.call}>Switch Name</button>
+        <button onClick={this.call.bind(this,"new Andy")}>Switch Name</button>
         <Person 
         name={this.state.persons[0].name} 
         age={this.state.persons[0].age}
-        click={this.call}/>
+           click={()=>this.call("new Andy2")}/>  
         <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hobby is coding</Person>
       </div>
 
