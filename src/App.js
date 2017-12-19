@@ -10,12 +10,27 @@ class App extends Component {
       {name:"Jack","age":22}
     ]
   }
+  call = (newName)=>{
+    // 使用 this.setState() 修改狀態
+    this.setState(
+      {
+        persons: [
+          { name: "Andy2", "age": 21 },
+          { name: "Jack2", "age": 22 }
+        ]
+      }
+    );
+  }
 
   render() {
     return (
       <div className="App">
         <h1>Hello World! React</h1>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age}/>
+        <button onClick={this.call}>Switch Name</button>
+        <Person 
+        name={this.state.persons[0].name} 
+        age={this.state.persons[0].age}
+        click={this.call}/>
         <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hobby is coding</Person>
       </div>
 
