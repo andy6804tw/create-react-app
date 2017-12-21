@@ -8,7 +8,8 @@ class App extends Component {
     persons:[
       {name:"Andy","age":21},
       {name:"Jack","age":22}
-    ]
+    ],
+    showPerson: false
   }
   call = (newName)=>{
     // 使用 this.setState() 修改狀態
@@ -32,6 +33,11 @@ class App extends Component {
     );
   }
 
+  showPerson=()=>{
+    const bool=this.state.showPerson;
+    this.setState({ showPerson: !bool});
+  }
+
   render() {
     const style={
       backgroundColor: 'white',
@@ -40,18 +46,29 @@ class App extends Component {
       padding:'8px',
       cursor:'pointer'
     };
+
+    let persons=null;
+    if(this.state.showPerson){
+      persons=(
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age}
+            click={() => this.call("new Andy2")}
+            changed={this.nameChange} />
+          <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hobby is coding</Person>
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Hello World! React</h1>
         <button 
         style={style}
-        onClick={this.call.bind(this,"new Andy")}>Switch Name</button>
-        <Person 
-        name={this.state.persons[0].name} 
-        age={this.state.persons[0].age}
-        click={()=>this.call("new Andy2")}
-        changed={this.nameChange}/>  
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hobby is coding</Person>
+          onClick={this.showPerson}>Switch Name</button>
+        {/* 按鈕顯示資料使用問號運算子判斷 */}
+        {persons}
       </div>
 
     );
