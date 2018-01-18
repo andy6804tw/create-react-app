@@ -5,13 +5,13 @@ import Person from './Person/Person';
 class App extends Component {
 
   state = {
-    persons:[
-      {name:"Andy","age":21},
-      {name:"Jack","age":22}
+    persons: [
+      { id: "1", name: "Andy", "age": 21 },
+      { id: "2", name: "Jack", "age": 22 }
     ],
     showPerson: false
   }
-  call = (newName)=>{
+  call = (newName) => {
     // 使用 this.setState() 修改狀態
     this.setState(
       {
@@ -22,41 +22,58 @@ class App extends Component {
       }
     );
   }
-  nameChange=(event)=>{
+  nameChange = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
     this.setState(
       {
-        persons: [
-          { name: event.target.value, "age": 21 },
-          { name: "Jack2", "age": 22 }
-        ]
+        persons: persons
       }
     );
   }
 
-  showPerson=()=>{
-    const bool=this.state.showPerson;
-    this.setState({ showPerson: !bool});
+  showPerson = () => {
+    const bool = this.state.showPerson;
+    this.setState({ showPerson: !bool });
+  }
+
+  deletePerson = (index) => {
+    //const persons=this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(index, 1);
+    this.setState({ persons: persons });
   }
 
   render() {
-    const style={
+    const style = {
       backgroundColor: 'white',
-      font:'inherit',
+      font: 'inherit',
       border: '1px solid blue',
-      padding:'8px',
-      cursor:'pointer'
+      padding: '8px',
+      cursor: 'pointer'
     };
 
-    let persons=null;
-    if(this.state.showPerson){
-      persons=(
+    let persons = null;
+    if (this.state.showPerson) {
+      persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-            click={() => this.call("new Andy2")}
-            changed={this.nameChange} />
-          <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hobby is coding</Person>
+          {this.state.persons.map((person, index) => {
+            return <Person
+              name={person.name}
+              age={person.age}
+              click={() => this.deletePerson(index)}
+              key={person.id}
+              changed={(event) => this.nameChange(event, person.id)} />
+          })}
         </div>
       );
     }
@@ -64,10 +81,10 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Hello World! React</h1>
-        <button 
-        style={style}
+        <button
+          style={style}
           onClick={this.showPerson}>Switch Name</button>
-        {/* 按鈕顯示資料使用問號運算子判斷 */}
+        {/* 按鈕顯示資料使用js判斷 */}
         {persons}
       </div>
 
