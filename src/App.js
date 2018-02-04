@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Radium, {StyleRoot} from 'radium';
+import Radium, { StyleRoot } from 'radium';
 import './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
 
@@ -61,7 +62,7 @@ class App extends Component {
       border: '1px solid blue',
       padding: '8px',
       cursor: 'pointer',
-      ':hover':{
+      ':hover': {
         backgroundColor: 'lightgreen',
         color: 'black'
       }
@@ -69,19 +70,25 @@ class App extends Component {
 
     let persons = null;
     if (this.state.showPerson) {
+      const rnd = Math.random();
+      if (rnd > 0.7) {
+        throw new Error('Something went wrong');
+      }
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
-              name={person.name}
-              age={person.age}
-              click={() => this.deletePerson(index)}
-              key={person.id}
-              changed={(event) => this.nameChange(event, person.id)} />
+            return (
+              <ErrorBoundary key={person.id}>
+                <Person
+                  name={person.name}
+                  age={person.age}
+                  click={() => this.deletePerson(index)}
+                  changed={(event) => this.nameChange(event, person.id)} />
+              </ErrorBoundary>)
           })}
         </div>
       );
-      style.backgroundColor='green';
+      style.backgroundColor = 'green';
       style[':hover'] = {
         backgroundColor: 'salmon',
         color: 'white'
