@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Radium, { StyleRoot } from 'radium';
 import './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
@@ -44,6 +44,7 @@ class App extends Component {
   }
 
   showPerson = () => {
+    console.log('click');
     const bool = this.state.showPerson;
     this.setState({ showPerson: !bool });
   }
@@ -56,53 +57,24 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'red',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
-    };
-
     let persons = null;
     if (this.state.showPerson) {
-      const rnd = Math.random();
-      if (rnd > 0.7) {
-        throw new Error('Something went wrong');
-      }
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <ErrorBoundary key={person.id}>
-                <Person
-                  name={person.name}
-                  age={person.age}
-                  click={() => this.deletePerson(index)}
-                  changed={(event) => this.nameChange(event, person.id)} />
-              </ErrorBoundary>)
-          })}
-        </div>
+          <Persons 
+
+          persons={this.state.persons}
+          clicked={this.deletePerson}
+          changed={this.nameChange}/>
       );
-      style.backgroundColor = 'green';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'white'
-      }
     }
 
     return (
       <StyleRoot>
         <div className="App">
-          <h1>Hello World! React</h1>
-          <button
-            style={style}
-            onClick={this.showPerson}>Switch Name</button>
           {/* 按鈕顯示資料使用js判斷 */}
+          <Cockpit 
+          showPerson={this.state.showPerson}
+            clicked={this.showPerson}/>
           {persons}
         </div>
       </StyleRoot>
